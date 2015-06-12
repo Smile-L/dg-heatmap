@@ -189,7 +189,7 @@ func main() {
 	// calibFileName := "D:/Desktop/heatmap_deepglint/floor_calib106.dat"
 
 	// fileName := "output_20150603_dr_2d.csv"
-	fileName := "output_20150603.csv"
+	fileName := "D:/Desktop/go/output_20150603.csv"
 	rawCsvData := readRawData(fileName)
 	startTime := 1433244616921
 	endTime := 1433382753447

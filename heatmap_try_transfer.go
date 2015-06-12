@@ -104,7 +104,7 @@ func getPicture(SensorId_selected string) image.Image {
 func main() {
 
 	// fileName := "output_20150603_dr_2d.csv"
-	fileName := "output_20150603.csv"
+	fileName := "c:/Go/src/github.com/lisiminy/dg-heatmap/output_20150603.csv"
 	rawCsvData := readRawData(fileName)
 	// startTIme := 1433244616921
 	// endTime := 1433382753447
