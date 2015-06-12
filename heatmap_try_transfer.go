@@ -101,6 +101,19 @@ func getPicture(SensorId_selected string) image.Image {
 	return m
 }
 
+func pasetePicture(m image.Image, img image.Image, sensorSelected string) {
+	b := m.Bounds()
+	mm := image.NewNRGBA(b)
+	draw.Draw(mm, b, m, image.ZP, draw.Src)
+	draw.Draw(mm, img.Bounds(), img, image.ZP, draw.Over)
+	fmt.Println("save picuture")
+	savePicName := "d:/Desktop/output_" + sensorSelected + ".png"
+	out, err := os.Create(savePicName)
+	check(err)
+	err = png.Encode(out, mm)
+	check(err)
+}
+
 func main() {
 
 	// fileName := "output_20150603_dr_2d.csv"
@@ -109,8 +122,8 @@ func main() {
 	// startTIme := 1433244616921
 	// endTime := 1433382753447
 	// 1433382753447 1433244616921
-	// sensorSelected := "a1f20e44503436343300000500c90016"
-	// calibFileName := "D:/Desktop/heatmap_deepglint/floor_calib4.dat"
+	sensorSelected := "a1f20e44503436343300000500c90016"
+	calibFileName := "D:/Desktop/heatmap_deepglint/floor_calib4.dat"
 
 	// sensorSelected := "a1f20e44503436343300000500a60028"
 	// calibFileName := "D:/Desktop/heatmap_deepglint/floor_calib8.dat"
@@ -118,8 +131,8 @@ func main() {
 	// sensorSelected := "a1f20e445034363433000005005c0022"
 	// calibFileName := "D:/Desktop/heatmap_deepglint/floor_calib14.dat"
 
-	sensorSelected := "a1f20e44503436343300000500880029"
-	calibFileName := "D:/Desktop/heatmap_deepglint/floor_calib15.dat"
+	// sensorSelected := "a1f20e44503436343300000500880029"
+	// calibFileName := "D:/Desktop/heatmap_deepglint/floor_calib15.dat"
 
 	// sensorSelected := "a1f20e44503436343300000500b60021"
 	// calibFileName := "D:/Desktop/heatmap_deepglint/floor_calib16.dat"
@@ -190,19 +203,7 @@ func main() {
 	scheme := schemes.Classic
 	img := heatmap.Heatmap(image.Rect(0, 0, int(xMax), int(yMax)),
 		points, 20, 128, scheme)
-	//////////////////////////
-	b := img.Bounds()
-	m := image.NewNRGBA(b)
 
-	// draw.Draw(mm, b, m, image.ZP, draw.Src)
-	draw.Draw(m, b, img, image.ZP, draw.Over)
-
-	savePicNamem := "./output_" + sensorSelected + "_before_transfer.png"
-	outm, err := os.Create(savePicNamem)
-	check(err)
-	err = png.Encode(outm, m)
-	check(err)
-	///////////////////////////////////////////////
 	resoluionX := 640
 	resoluionY := 480
 
@@ -236,16 +237,9 @@ func main() {
 		}
 	}
 
-	// m := getPicture(sensorSelected)
-	b2 := imgTransfer.Bounds()
-	mm := image.NewNRGBA(b2)
+	m := getPicture(sensorSelected)
+	// fmt.Println(m.Bounds())
 
-	// draw.Draw(mm, b, m, image.ZP, draw.Src)
-	draw.Draw(mm, b2, imgTransfer, image.ZP, draw.Over)
+	pasetePicture(m, imgTransfer, sensorSelected)
 
-	savePicName := "./output_" + sensorSelected + "_transfer.png"
-	out, err := os.Create(savePicName)
-	check(err)
-	err = png.Encode(out, mm)
-	check(err)
 }
