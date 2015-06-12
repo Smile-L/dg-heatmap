@@ -146,7 +146,7 @@ func pasetePicture(m image.Image, img image.Image, sensorSelected string) {
 	draw.Draw(mm, b, m, image.ZP, draw.Src)
 	draw.Draw(mm, img.Bounds(), img, image.ZP, draw.Over)
 	fmt.Println("save picuture")
-	savePicName := "./output_" + sensorSelected + ".png"
+	savePicName := "d:/Desktop/output_" + sensorSelected + ".png"
 	out, err := os.Create(savePicName)
 	check(err)
 	err = png.Encode(out, mm)

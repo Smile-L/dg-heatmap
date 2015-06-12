@@ -104,7 +104,7 @@ func getPicture(SensorId_selected string) image.Image {
 func main() {
 
 	// fileName := "output_20150603_dr_2d.csv"
-	fileName := "c:/Go/src/github.com/lisiminy/dg-heatmap/output_20150603.csv"
+	fileName := "D:/Desktop/go/output_20150603.csv"
 	rawCsvData := readRawData(fileName)
 	// startTIme := 1433244616921
 	// endTime := 1433382753447
@@ -159,7 +159,7 @@ func main() {
 
 			xFloor, err := strconv.ParseFloat(data[4], 64)
 			xFloor = xFloor
-			xFloor = (xFloor + 1000) / 10
+			xFloor = (xFloor + 10000) / 10
 			check(err)
 			yFloor, err := strconv.ParseFloat(data[5], 64)
 			yFloor = yFloor / 10
@@ -173,10 +173,10 @@ func main() {
 			// xImage := 320 - coeffX*(xCam/zCam)
 			// yImage := 240 + coeffY*(yCam/zCam)
 			// if yFloor > 0 {
-			// if xFloor > 0 {
-			points = append(points, heatmap.P(xFloor, yFloor))
+			if xFloor > 0 {
+				points = append(points, heatmap.P(xFloor, yFloor))
 
-			// }
+			}
 			if xFloor > xMax {
 				xMax = xFloor
 			}
@@ -203,37 +203,31 @@ func main() {
 	err = png.Encode(outm, m)
 	check(err)
 	///////////////////////////////////////////////
+	resoluionX := 640
+	resoluionY := 480
 
-	imgTransfer := image.NewNRGBA(image.Rect(0, 0, 640, 480))
+	imgTransfer := image.NewNRGBA(image.Rect(0, 0, resoluionX, resoluionY))
 
-	coeffX := 640 / 1.12213
-	coeffY := 480 / 0.84160
-	for x := 0; x < 640; x++ {
-		for y := 0; y < 480; y++ {
-			xImage := float64(320 - x)
-			yImage := float64(y - 240) ////
+	coeffX := float64(resoluionX) / 1.12213
+	coeffY := float64(resoluionY) / 0.84160
+	for x := 0; x < resoluionX; x++ {
+		for y := 0; y < resoluionY; y++ {
+			xImage := float64(resoluionX/2 - x)
+			yImage := -float64(y - resoluionY/2) ////
 			// fmt.Println(y)
 			zCam := -t[2] / (r[8] + r[2]*xImage/coeffX + r[5]*yImage/coeffY)
-			// fmt.Println(zCam)
+			// fmt.Println(yImage, zCam)
 			xCam := xImage * zCam / coeffX
 			yCam := yImage * zCam / coeffY
 			xFloor := xCam*r[0] + yCam*r[3] + zCam*r[6] + t[0]
 			yFloor := xCam*r[1] + yCam*r[4] + zCam*r[7] + t[1]
-			// zCam := -t[2] / (r[8] + r[6]*xImage/coeffX + r[7]*yImage/coeffY)
-			// fmt.Println(zCam)
-			// xCam := xImage * zCam / coeffX
-			// yCam := yImage * zCam / coeffY
-			// xFloor := xCam*r[0] + yCam*r[1] + zCam*r[2] + t[0]
-			// yFloor := xCam*r[3] + yCam*r[4] + zCam*r[5] + t[1]
-			xFloorInt := (int(xFloor) + 1000) / 10 ///
+
+			xFloorInt := (int(xFloor) + 10000) / 10 ///
 			yFloorInt := int(yFloor) / 10
+			// fmt.Println(yFloor, zCam)
 			// fmt.Println(xFloorInt, yFloorInt) ///
-			r, g, b, a := img.At(xFloorInt, yFloorInt).RGBA()
+			r, g, b, a := img.At(xFloorInt, int(yMax)-yFloorInt).RGBA()
 			imgTransfer.Set(x, y, color.RGBA{
-				// R: unit8(r),
-				// G: unit8(g),
-				// B: unit8(b),
-				// A: unit8(a),
 				R: uint8(r >> 8),
 				G: uint8(g >> 8),
 				B: uint8(b >> 8),
@@ -243,7 +237,6 @@ func main() {
 	}
 
 	// m := getPicture(sensorSelected)
-	// fmt.Println(m.Bounds())
 	b2 := imgTransfer.Bounds()
 	mm := image.NewNRGBA(b2)
 
