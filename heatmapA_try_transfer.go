@@ -128,8 +128,8 @@ func main() {
 	// startTIme := 1433244616921
 	// endTime := 1433382753447
 	// 1433382753447 1433244616921
-	// sensorSelected := "a1f20e44503436343300000500c90016"
-	// calibFileName := "D:/Go/src/github.com/lisiminy/dg-heatmap/floor_calib4.dat"
+	sensorSelected := "a1f20e44503436343300000500c90016"
+	calibFileName := "D:/Go/src/github.com/lisiminy/dg-heatmap/floor_calib4.dat"
 
 	// sensorSelected := "a1f20e44503436343300000500a60028"
 	// calibFileName := "D:/Go/src/github.com/lisiminy/dg-heatmap/floor_calib8.dat"
@@ -146,8 +146,8 @@ func main() {
 	// sensorSelected := "a1f20e445034363433000005005c0022"
 	// calibFileName := "D:/Go/src/github.com/lisiminy/dg-heatmap/floor_calib98.dat"
 
-	sensorSelected := "a1f20e44503436343300000500540029"
-	calibFileName := "D:/Go/src/github.com/lisiminy/dg-heatmap/floor_calib99.dat"
+	// sensorSelected := "a1f20e44503436343300000500540029"
+	// calibFileName := "D:/Go/src/github.com/lisiminy/dg-heatmap/floor_calib99.dat"
 
 	// sensorSelected := "a1f20e44503436343300000500640029"
 	// calibFileName := "D:/Go/src/github.com/lisiminy/dg-heatmap/floor_calib103.dat"
@@ -236,10 +236,10 @@ func main() {
 			if yFloor > yMax {
 				yMax = yFloor
 			}
-			// }
 		}
 	}
-	fmt.Println(xMax, yMax)
+	xMax = xMax + 100
+	yMax = yMax + 100
 	img := heatmapA.HeatmapA(points , int(xMax) , int(yMax) , 20)
 	// img := heatmapA.HeatmapA(image.Rect(0, 0, int(xMax), int(yMax)),
 	// 	points, 20, 128, scheme)
